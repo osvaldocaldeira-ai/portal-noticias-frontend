@@ -3,6 +3,7 @@ import type Administrador from "../interfaces/Administrador";
 import { useNavigate } from "react-router";
 
 function useAdministrador(){
+    const [id, setId]= useState("");
     const [nome, setNome]= useState("");
         const [email, setEmail]= useState("");
             const [senha, setSenha]= useState("");
@@ -10,7 +11,7 @@ function useAdministrador(){
 const navigate= useNavigate()         
 function cadastrarAdministrador(evento: React.SubmitEvent<HTMLFormElement>){
 evento.preventDefault();
-const administrador= {nome,email, senha}
+const administrador: Administrador= {id: crypto.randomUUID(), nome,email, senha}
 
 const listaAdministradores= JSON.parse(localStorage.getItem("listaAdministradores") || "[]");
 listaAdministradores.push(administrador);
@@ -22,6 +23,7 @@ setTimeout(() => {
 }               
 
 function limparCampos(){
+    setId("");
     setNome("");
     setEmail("");
     setSenha("");
@@ -35,28 +37,28 @@ return listaAdministradores;
     
 }
 
-function excluirAdministrador(email: string){
+function excluirAdministrador(id: string){
 const listaAdministradores= buscarAdministradores()
 const novaLista = listaAdministradores.filter(
    (administrador)=>
-administrador.email!=email
-    
-);
+administrador.id!=id
+    );
 localStorage.setItem("listaAdministradores", JSON.stringify(novaLista))
 
 }
 
 function alterarAdministrador(
     evento: React.SubmitEvent<HTMLFormElement>,
-emailOriginal: string){
+id: string){
 evento.preventDefault()
 
 const listaAdministradores= buscarAdministradores()
 
 const novaLista= listaAdministradores.map(
     (administrador) =>{
-if(administrador.email==emailOriginal){
+if(administrador.id==id){
 return{
+    id,
     nome,
     email,
     senha
@@ -74,6 +76,8 @@ setTimeout(() => {
 
     return(
 {
+    id,
+    setId,
     nome,
     setNome,
     email,
