@@ -34,6 +34,13 @@ function realizarLogout(){
 localStorage.removeItem("Usuário logado");
 }
 
+function verificarUsuarioLogado(){
+const usuarioLogado= localStorage.getItem("usuarioLogado");
+if(usuarioLogado!="Sim"){
+navigate("/login")
+}
+}
+
 return(
 {
     email,
@@ -43,7 +50,8 @@ setSenha,
 mensagem,
 setMensagem,
 realizarLogin,
-realizarLogout
+realizarLogout,
+verificarUsuarioLogado
 }
     );
 }

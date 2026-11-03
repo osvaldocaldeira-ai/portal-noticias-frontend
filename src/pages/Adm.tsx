@@ -1,15 +1,12 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router";
 import MenuAdm from "../components/MenuAdm";
+import useLogin from "../hooks/useLogin";
 
 function Adm(){
+const {verificarUsuarioLogado}= useLogin()
 
-const navigate= useNavigate();
 useEffect(()=>{
-const usuarioLogado= localStorage.getItem("usuarioLogado");
-if(usuarioLogado!="Sim"){
-navigate("/login")
-}
+verificarUsuarioLogado()
 }, []);
 
 return(
