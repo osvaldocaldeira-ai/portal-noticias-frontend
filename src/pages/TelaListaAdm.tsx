@@ -77,11 +77,8 @@ Tela de Listagem de Administrador
             )
                     }
     </tbody>
-
 </table>
 </main>
-
-
 
 </>
 
