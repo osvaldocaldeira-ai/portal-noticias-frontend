@@ -19,8 +19,7 @@ return(
 
 
 </>
-)
-;
+);
 
 }
 export default Adm

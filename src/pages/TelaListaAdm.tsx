@@ -73,7 +73,10 @@ Tela de Listagem de Administrador
         const confirmar= window.confirm("Deseja excluir o administrador " + administrador.nome +"?")
         if(confirmar){
             excluirAdministrador(administrador.id)
-            setListaAdministradores(buscarAdministradores())
+buscarAdministradores().then((dados: Administrador[]) =>{
+setListaAdministradores(dados)
+})
+
         }
        }}>
         Excluir

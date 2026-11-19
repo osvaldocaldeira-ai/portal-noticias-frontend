@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import type Administrador from "../interfaces/Administrador";
 import { useNavigate } from "react-router";
 import axios from "axios";
+import App from "../App";
 
 function useAdministrador(){
     const [id, setId]= useState("");
@@ -17,15 +18,18 @@ const API= "http://localhost:3000/administradores";
 
 async function cadastrarAdministrador(evento: React.SubmitEvent<HTMLFormElement>){
 evento.preventDefault();
-const administrador: Administrador= {id: crypto.randomUUID(), nome,email, senha}
-
-const listaAdministradores= JSON.parse(localStorage.getItem("listaAdministradores") || "[]");
-listaAdministradores.push(administrador);
-localStorage.setItem("listaAdministradores", JSON.stringify(listaAdministradores));
-setMensagem("Cadastro realizado com sucesso")
-setTimeout(() => {
-    limparCampos()
-}, 1000);
+try {
+    const resposta= await axios.post(API, {
+        nome, email, senha
+    });
+    setMensagem(resposta.data.mensagem);
+    setTimeout(() => {
+        limparCampos();
+    }, 1000);
+} catch (error) {
+    console.log(error);
+    setMensagem("Erro ao cadastrar administrador: "+error)
+}
 }               
 
 function limparCampos(){
@@ -48,41 +52,35 @@ async function buscarAdministradores(): Promise<Administrador[]>{
     }
 }
 
-function excluirAdministrador(id: string){
-const listaAdministradores= buscarAdministradores()
-const novaLista = listaAdministradores.filter(
-   (administrador)=>
-administrador.id!=id
-    );
-localStorage.setItem("listaAdministradores", JSON.stringify(novaLista))
+async function excluirAdministrador(id: string){
+try {
+    const resposta= await axios.delete(API+"/"+id);
+    setMensagem(resposta.data.mensagem);
 
+} catch (error) {
+    console.log(error);
+    setMensagem("error"+error)
 }
-
-function alterarAdministrador(
+}
+async function alterarAdministrador(
     evento: React.SubmitEvent<HTMLFormElement>,
 id: string){
 evento.preventDefault()
 
-const listaAdministradores= buscarAdministradores()
-
-const novaLista= listaAdministradores.map(
-    (administrador) =>{
-if(administrador.id==id){
-return{
-    id,
-    nome,
-    email,
-    senha
-}
-return administrador
-}
-    }
-)
-localStorage.setItem("listaAdministradores", JSON.stringify(novaLista))
-setMensagem("Administrador Alterado Com Sucesso")
+try {
+    const resposta= await axios.put(API+"/"+id, {
+        nome, email, senha
+    });
+setMensagem(resposta.data.mensagem);
 setTimeout(() => {
     navigate("/telaListaAdm")
 }, 1000);
+
+} catch (error) {
+console.log(error);
+setMensagem("Erro ao alterar administrador: "+error);    
+}
+
 }
 
     return(

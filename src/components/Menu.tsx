@@ -6,7 +6,7 @@ function Menu(){
 
 return(
 <nav className="menu">
-    <p>
+    
         <Link to="/" className="botao-menu">
         Home
         </Link>
@@ -20,7 +20,6 @@ return(
                </Link>
 
 
-            </p>
 </nav>
 );
 }
